@@ -31,5 +31,4 @@ public class MyUITest  {
     String value = pageObject.output.get().getAttribute("value");
     Assertions.assertEquals("10", value);
   }
-
 }
