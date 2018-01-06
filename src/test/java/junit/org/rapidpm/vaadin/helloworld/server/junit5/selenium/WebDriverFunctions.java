@@ -40,8 +40,7 @@ public interface WebDriverFunctions {
         final ChromeOptions options      = new ChromeOptions();
         options.setAcceptInsecureCerts(true);
         options.setCapability("chrome", Platform.ANY);
-        final ChromeDriver  driver = new ChromeDriver(options);
-        return Optional.of(driver);
+        return Optional.of(new ChromeDriver(options));
       } catch (Exception e) {
         e.printStackTrace();
         return empty();
@@ -54,8 +53,7 @@ public interface WebDriverFunctions {
       try {
         final OperaOptions options      = new OperaOptions();
         options.setCapability("opera", Platform.ANY);
-        final OperaDriver  driver = new OperaDriver(options);
-        return Optional.of(driver);
+        return Optional.of(new OperaDriver(options));
       } catch (Exception e) {
         e.printStackTrace();
         return empty();
@@ -69,13 +67,7 @@ public interface WebDriverFunctions {
         final FirefoxOptions options = new FirefoxOptions();
         options.setAcceptInsecureCerts(true);
         options.setCapability("firefox", Platform.ANY);
-        final FirefoxDriver  driver  = new FirefoxDriver(options);
-        driver
-            .manage()
-            .timeouts()
-            .implicitlyWait(10, TimeUnit.SECONDS);
-
-        return Optional.of(driver);
+        return Optional.of(new FirefoxDriver(options));
       } catch (Exception e) {
         e.printStackTrace();
         return empty();
@@ -90,11 +82,9 @@ public interface WebDriverFunctions {
 
   static Consumer<WebDriver> takeScreenShot() {
     return (webDriver) -> {
-      //take Screenshot
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       try {
         outputStream.write(((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES));
-        //write to target/screenshot-[timestamp].jpg
         final FileOutputStream out = new FileOutputStream("target/screenshot-" + LocalDateTime.now() + ".png");
         out.write(outputStream.toByteArray());
         out.flush();
